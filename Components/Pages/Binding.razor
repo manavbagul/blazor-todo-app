@@ -1,0 +1,44 @@
+@page "/binding"
+@rendermode InteractiveServer
+
+<PageTitle>Data Binding and Events</PageTitle>
+
+<h1> Binding</h1>
+
+
+<p role="status"> Current count: @(currentCount)</p>
+<button class="btn btn-secondary" @onclick="IncrementCount">Hit Me</button>
+<button class="btn btn-primary" @onclick="()=>{currentCount++;}">Hit me Hard</button>
+
+@if (currentCount%30 == 0){
+	<p>You Win!</p>
+}
+
+<ul>
+	@foreach (var age in ages){
+		<li>@(age)</li>
+	}
+</ul>
+
+<input @onchange="InputChanged" />
+<input @bind="message" />
+<p>@message</p>
+<p>Press Enter after Filling To show</p>
+@code {
+	private int currentCount = 0;
+
+	[Parameter]
+	public int IncrementAmount { get; set; } = 10;
+
+	private int[] ages = { 10, 20, 30, 40 };
+
+	private void IncrementCount(){
+		currentCount += IncrementAmount;
+	}
+
+	string message = "Init";
+
+	void InputChanged(ChangeEventArgs e){
+	message = (string)e.Value;
+}
+}
